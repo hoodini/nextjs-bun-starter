@@ -9,7 +9,7 @@ import { InsightsSection } from '@/components/sections/insights-section';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#1C1C1E] text-white">
+    <main className="min-h-screen bg-background text-foreground dark:bg-[#1C1C1E]">
       <Navbar />
       <HeroSection />
       <AboutSection />

@@ -11,7 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User, LogOut, Settings } from 'lucide-react';
+import { User, LogOut, Settings, Sun, Moon } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 const navLinks = [
   { href: '#about', label: 'About' },
@@ -50,16 +52,47 @@ function PhoenixLogo({ className = "w-8 h-8" }: { className?: string }) {
   );
 }
 
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <button className="w-9 h-9 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center">
+        <Sun className="w-4 h-4 text-foreground/60" />
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="w-9 h-9 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center transition-colors"
+      aria-label="Toggle theme"
+    >
+      {theme === 'dark' ? (
+        <Sun className="w-4 h-4 text-foreground/60 hover:text-foreground transition-colors" />
+      ) : (
+        <Moon className="w-4 h-4 text-foreground/60 hover:text-foreground transition-colors" />
+      )}
+    </button>
+  );
+}
+
 export function Navbar() {
   const { data: session } = useSession();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4">
-      <nav className="glass-panel-dark rounded-full px-6 py-3 flex items-center gap-8 max-w-[900px] w-full">
+      <nav className="glass-panel dark:glass-panel-dark rounded-full px-6 py-3 flex items-center gap-8 max-w-[900px] w-full">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <PhoenixLogo className="w-8 h-8" />
-          <span className="text-lg font-semibold text-white tracking-tight">
+          <span className="text-lg font-semibold text-foreground tracking-tight">
             YUV.AI
           </span>
         </Link>
@@ -70,15 +103,16 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-white/70 hover:text-white transition-colors duration-200"
+              className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200"
             >
               {link.label}
             </Link>
           ))}
         </div>
 
-        {/* Right Side - User Avatar or Contact Button */}
+        {/* Right Side - Theme Toggle & User Avatar */}
         <div className="flex items-center gap-3 shrink-0">
+          <ThemeToggle />
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
