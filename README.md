@@ -8,16 +8,16 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?style=for-the-badge&logo=tailwind-css)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-[![npm version](https://img.shields.io/npm/v/create-yuv-app?style=for-the-badge&logo=npm&label=create-yuv-app)](https://www.npmjs.com/package/create-yuv-app)
-[![npm downloads](https://img.shields.io/npm/dm/create-yuv-app?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/create-yuv-app)
+[![npm version](https://img.shields.io/npm/v/create-yuv-bun-app?style=for-the-badge&logo=npm&label=create-yuv-bun-app)](https://www.npmjs.com/package/create-yuv-bun-app)
+[![npm downloads](https://img.shields.io/npm/dm/create-yuv-bun-app?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/create-yuv-bun-app)
 
 ### A production-ready boilerplate to ship your next project 30x faster
 
 **This is a starting point, not a finished product. Clone it, customize it, make it yours.**
 
-**Install in seconds:** `bun create yuv-app my-project`
+**Install in seconds:** `bun create yuv-bun-app my-project`
 
-[Live Demo](https://nextjs-bun-starter.vercel.app) | [npm Package](https://www.npmjs.com/package/create-yuv-app) | [Report Bug](https://github.com/hoodini/nextjs-bun-starter/issues)
+[Live Demo](https://nextjs-bun-starter.vercel.app) | [npm Package](https://www.npmjs.com/package/create-yuv-bun-app) | [Report Bug](https://github.com/hoodini/nextjs-bun-starter/issues)
 
 <img src="https://cdn.hailuoai.video/moss/prod/2026-01-06-18/user/multi_chat_file/1767693880950248428-304191379171532808_1767693879.jpg" alt="Tech Stack - Next.js, Bun, TypeScript, Tailwind CSS, Shadcn/ui" width="400">
 
@@ -84,15 +84,15 @@ npx tsx file.ts   → bun file.ts    # TypeScript runs directly!
 ### One-Line Installation (Recommended)
 
 ```bash
-bun create yuv-app my-project
+bun create yuv-bun-app my-project
 ```
 
 Works with any package manager:
 ```bash
-bun create yuv-app my-project   # Recommended
-npm create yuv-app my-project   # Also works
-pnpm create yuv-app my-project  # Also works
-yarn create yuv-app my-project  # Also works
+bun create yuv-bun-app my-project   # Recommended
+npm create yuv-bun-app my-project   # Also works
+pnpm create yuv-bun-app my-project  # Also works
+yarn create yuv-bun-app my-project  # Also works
 ```
 
 ### Manual Installation
