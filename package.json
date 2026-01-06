@@ -2,6 +2,24 @@
   "name": "yuval-avidani-portfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "Production-ready Next.js starter with Bun, Shadcn/ui, Tailwind CSS, and Google Authentication",
+  "author": "Yuval Avidani <info@yuv.ai> (https://yuv.ai)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hoodini/nextjs-bun-starter.git"
+  },
+  "keywords": [
+    "nextjs",
+    "bun",
+    "boilerplate",
+    "starter-kit",
+    "shadcn-ui",
+    "tailwind",
+    "nextauth",
+    "typescript",
+    "react"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
