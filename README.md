@@ -489,7 +489,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-<img src="https://media.licdn.com/dms/image/v2/D4D03AQFAuznqcEJXTA/profile-displayphoto-scale_200_200/B4DZq1DCZpIMAY-/0/1763974088560?e=1769040000&v=beta&t=dRh477jKl4BQ0KqsJUg9X7UkuDDzoWgC68aHLnHDXMk" alt="Yuval Avidani" width="120" height="120" style="border-radius: 50%">
+<img src="https://cdn.hailuoai.video/moss/prod/2026-01-01-02/user/multi_chat_file/1767204442417679023-304191379171532808_1767204439.jpg" alt="Yuval Avidani" width="120" height="120" style="border-radius: 50%">
 
 ### Yuval Avidani
 

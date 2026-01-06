@@ -91,7 +91,7 @@ export function AboutSection() {
               <div className="flex items-start gap-6 mb-8">
                 <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-[#FF4D8E]/20 shrink-0">
                   <Image
-                    src="https://media.licdn.com/dms/image/v2/D4D03AQFAuznqcEJXTA/profile-displayphoto-shrink_800_800/B4DZq1DCZpIMAY-/0/1763974088560?e=1769040000&v=beta&t=dRh477jKl4BQ0KqsJUg9X7UkuDDzoWgC68aHLnHDXMk"
+                    src="https://cdn.hailuoai.video/moss/prod/2026-01-01-02/user/multi_chat_file/1767204442417679023-304191379171532808_1767204439.jpg"
                     alt="Yuval Avidani"
                     fill
                     className="object-cover"
