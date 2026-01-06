@@ -20,7 +20,7 @@ function CodeBlock({ code, language = 'bash' }: CodeBlockProps) {
 
   return (
     <div className="relative group">
-      <pre className="bg-[#1C1C1E] rounded-lg p-4 overflow-x-auto">
+      <pre className="bg-[#1C1C1E]/90 backdrop-blur-md border border-white/10 rounded-xl p-4 overflow-x-auto shadow-xl">
         <code className={`text-sm font-mono text-white/90 language-${language}`}>
           {code}
         </code>
@@ -123,7 +123,7 @@ export function QuickStartSection() {
                   <div className="absolute left-6 top-20 bottom-0 w-0.5 bg-gradient-to-b from-[#FF4D8E] to-[#FF4D8E]/20 hidden md:block" />
                 )}
 
-                <div className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6 md:p-8">
+                <div className="rounded-2xl overflow-hidden p-6 md:p-8 bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
                   <div className="flex flex-col md:flex-row md:items-start gap-6">
                     {/* Step Number */}
                     <div className="flex items-center gap-4 md:flex-shrink-0">
@@ -165,7 +165,7 @@ export function QuickStartSection() {
           transition={{ delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <div className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6 inline-block">
+          <div className="rounded-2xl p-6 inline-block bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
             <h4 className="font-semibold text-foreground mb-2">
               Need help setting up Google OAuth?
             </h4>

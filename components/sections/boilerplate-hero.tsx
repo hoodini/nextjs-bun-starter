@@ -65,7 +65,7 @@ export function BoilerplateHero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel-dark text-sm font-medium text-white/90 mb-6"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] text-sm font-medium text-white/90 mb-6"
         >
           <Rocket className="w-4 h-4 text-[#FF4D8E]" />
           Production-Ready Boilerplate
@@ -121,7 +121,7 @@ export function BoilerplateHero() {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="mb-8"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-4 rounded-xl bg-[#1C1C1E] dark:bg-[#2C2C2E] border border-white/10 font-mono text-sm md:text-base">
+          <div className="inline-flex items-center gap-3 px-6 py-4 rounded-xl bg-[#1C1C1E]/90 backdrop-blur-md border border-white/10 shadow-xl font-mono text-sm md:text-base">
             <span className="text-muted-foreground">$</span>
             <span className="text-white">bun create yuv-app my-project</span>
             <button

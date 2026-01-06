@@ -119,7 +119,7 @@ export function WhyThisStackSection() {
             const IconComponent = item.icon;
             return (
               <motion.div key={index} variants={itemVariants}>
-                <div className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6 h-full hover-lift group">
+                <div className="relative overflow-hidden rounded-2xl p-6 h-full transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] group">
                   {/* Tech Badge */}
                   <div className="flex items-center justify-between mb-4">
                     <div

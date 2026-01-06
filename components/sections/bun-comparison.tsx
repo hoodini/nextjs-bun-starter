@@ -92,7 +92,7 @@ export function BunComparisonSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6 text-center"
+                className="rounded-2xl overflow-hidden p-6 text-center bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
               >
                 <div className="w-12 h-12 rounded-xl bg-[#FF9100]/15 flex items-center justify-center mx-auto mb-4">
                   <IconComponent className="w-6 h-6 text-[#FF9100]" />
@@ -127,7 +127,7 @@ export function BunComparisonSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6"
+            className="rounded-2xl p-6 bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
@@ -160,7 +160,7 @@ export function BunComparisonSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6 border-2 border-[#FF9100]/30"
+            className="rounded-2xl p-6 bg-white/60 dark:bg-white/5 backdrop-blur-md border-2 border-[#FF9100]/30 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-[#FF9100]/20 flex items-center justify-center">
@@ -188,9 +188,9 @@ export function BunComparisonSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="glass-light dark:glass-dark shadow-glass rounded-[16px] overflow-hidden"
+          className="rounded-2xl overflow-hidden bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
         >
-          <div className="p-6 border-b border-border/50">
+          <div className="p-6 border-b border-white/20 dark:border-white/10">
             <h3 className="text-xl font-semibold text-foreground">Command Comparison</h3>
             <p className="text-sm text-muted-foreground mt-1">
               Same commands, just replace `npm` with `bun`

@@ -123,7 +123,7 @@ export function CustomizeSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-light dark:glass-dark shadow-glass rounded-[16px] p-6 hover-lift group"
+                className="rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] group"
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
@@ -151,7 +151,7 @@ export function CustomizeSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="glass-light dark:glass-dark shadow-glass rounded-[20px] p-8 border-2 border-[#FF4D8E]/20"
+          className="rounded-2xl p-8 bg-white/60 dark:bg-white/5 backdrop-blur-md border-2 border-[#FF4D8E]/20 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
         >
           <div className="flex items-start gap-4 mb-6">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FF4D8E] to-[#FF9100] flex items-center justify-center flex-shrink-0">
@@ -169,7 +169,7 @@ export function CustomizeSection() {
 
           {/* Prompt Box */}
           <div className="relative">
-            <pre className="bg-[#1C1C1E] dark:bg-[#0C0C0E] rounded-xl p-6 overflow-x-auto text-sm text-white/80 font-mono whitespace-pre-wrap">
+            <pre className="bg-[#1C1C1E]/90 backdrop-blur-md border border-white/10 rounded-xl p-6 overflow-x-auto text-sm text-white/80 font-mono whitespace-pre-wrap shadow-xl">
               {aiPrompt}
             </pre>
             <button

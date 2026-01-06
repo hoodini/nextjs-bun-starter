@@ -113,7 +113,7 @@ export function CTASection() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.05, y: -4 }}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all group"
+                  className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/5 backdrop-blur-md hover:bg-white/10 border border-white/10 hover:border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.2)] transition-all group"
                 >
                   <div
                     className="w-12 h-12 rounded-full flex items-center justify-center transition-transform group-hover:scale-110"

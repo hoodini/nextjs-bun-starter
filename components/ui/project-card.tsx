@@ -39,7 +39,7 @@ export function ProjectCard({
   return (
     <div
       className={cn(
-        'glass-dark shadow-glass rounded-[16px] overflow-hidden group hover:scale-[1.02] transition-transform duration-300',
+        'rounded-2xl overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] group hover:scale-[1.02] transition-all duration-300',
         className
       )}
     >
