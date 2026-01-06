@@ -1,4 +1,4 @@
-# ⚡ Next.js + Bun Starter Kit
+# Next.js + Bun Boilerplate
 
 <div align="center">
 
@@ -11,516 +11,330 @@
 [![npm version](https://img.shields.io/npm/v/create-yuv-app?style=for-the-badge&logo=npm&label=create-yuv-app)](https://www.npmjs.com/package/create-yuv-app)
 [![npm downloads](https://img.shields.io/npm/dm/create-yuv-app?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/create-yuv-app)
 
-**The ultimate production-ready Next.js starter kit with Bun, Shadcn/ui, Tailwind CSS, and Google Authentication.**
+### A production-ready boilerplate to ship your next project 30x faster
+
+**This is a starting point, not a finished product. Clone it, customize it, make it yours.**
 
 **Install in seconds:** `bun create yuv-app my-project`
 
-[Demo](https://nextjs-bun-starter.vercel.app) • [npm Package](https://www.npmjs.com/package/create-yuv-app) • [Report Bug](https://github.com/hoodini/nextjs-bun-starter/issues)
+[Live Demo](https://nextjs-bun-starter.vercel.app) | [npm Package](https://www.npmjs.com/package/create-yuv-app) | [Report Bug](https://github.com/hoodini/nextjs-bun-starter/issues)
 
-### Tech Stack
-
-<img src="https://cdn.hailuoai.video/moss/prod/2026-01-06-18/user/multi_chat_file/1767693880950248428-304191379171532808_1767693879.jpg" alt="Tech Stack - Next.js, Bun, TypeScript, Tailwind CSS, Shadcn/ui" width="100%">
+<img src="https://cdn.hailuoai.video/moss/prod/2026-01-06-18/user/multi_chat_file/1767693880950248428-304191379171532808_1767693879.jpg" alt="Tech Stack - Next.js, Bun, TypeScript, Tailwind CSS, Shadcn/ui" width="400">
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## What Is This?
 
-- [Why This Boilerplate?](#-why-this-boilerplate)
-- [Bun vs npm](#-bun-vs-npm-why-bun-wins)
-- [Features](#-features)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [Configuration](#-configuration)
-- [Available Scripts](#-available-scripts)
-- [Adding New Components](#-adding-new-components)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [About the Creator](#-about-the-creator)
+This is a **boilerplate** — a pre-configured starting point for your Next.js projects. Instead of spending hours setting up authentication, dark mode, UI components, and tooling, you get all of that out of the box.
 
----
-
-## 🎯 Why This Boilerplate?
-
-Stop wasting hours configuring your Next.js project. This starter kit gives you:
-
-- ⚡ **Blazing Fast Development** - Bun is 30x faster than npm for package installation
-- 🎨 **Beautiful UI Out of the Box** - Pre-configured Shadcn/ui components with Tailwind CSS
-- 🔐 **Authentication Ready** - Google OAuth with NextAuth.js already set up
-- 🌙 **Dark Mode Built-in** - System-aware theme switching
-- 📱 **Fully Responsive** - Mobile-first design that works everywhere
-- 🔒 **TypeScript Native** - Complete type safety with strict mode
-- 🚀 **Production Ready** - Optimized build configuration and best practices
-
-**Perfect for:**
+**Use it to build:**
 - SaaS applications
 - Landing pages
 - Web applications
+- Admin dashboards
 - Portfolios
-- MVP development
+- MVPs and prototypes
+
+**Then customize it for your specific needs.** The whole point is to give you a foundation so you can focus on building your unique product.
 
 ---
 
-## ⚡ Bun vs npm: Why Bun Wins
+## Why This Stack?
 
-### What is npm?
+Every technology in this boilerplate was chosen deliberately. Here's the reasoning:
 
-**npm (Node Package Manager)** is the default package manager that comes with Node.js. Released in 2010, it's been the standard for over a decade.
+| Technology | Why We Use It |
+|------------|---------------|
+| **Bun** | 30x faster package installs, native TypeScript support, built-in bundler. Drop-in npm replacement. |
+| **Next.js 16** | App Router, React Server Components, React 19 — the most production-ready React framework. |
+| **Shadcn/ui** | Beautiful, accessible components you own. Not a dependency — copy-paste code you can modify freely. |
+| **Tailwind CSS 4** | Utility-first styling with OKLch colors. Build any design directly in markup. |
+| **Google Auth** | Pre-configured OAuth with NextAuth.js. Session management and protected routes work out of the box. |
+| **Lucide Icons** | 1000+ consistent, beautiful icons. Tree-shakeable, so you only ship what you use. |
+| **Dark Mode** | System-aware theme switching with next-themes. Works on first load. |
 
-**Pros:**
-- Massive ecosystem with millions of packages
-- Well-documented and widely understood
-- Industry standard
+---
 
-**Cons:**
-- ❌ Slow installation speeds
-- ❌ Large node_modules folder sizes
-- ❌ Requires separate runtime (Node.js)
+## Bun vs npm: The Performance Difference
 
-### What is Bun?
+Bun is a drop-in replacement for npm. Same commands, same packages, just faster:
 
-**Bun** is an all-in-one JavaScript runtime that includes a package manager, bundler, and test runner. Built with Zig and JavaScriptCore, it's designed for speed from the ground up.
-
-**Pros:**
-- ✅ **30x faster** package installation than npm
-- ✅ Native TypeScript & JSX support (no transpilation needed)
-- ✅ Built-in bundler, test runner, and hot reloading
-- ✅ Drop-in npm replacement (100% compatible)
-- ✅ 60% smaller disk footprint
-- ✅ 6x faster script execution
-
-### Performance Comparison
-
-| Metric | npm | Bun | Winner |
-|--------|-----|-----|--------|
-| **Package Installation** | ~45 seconds | ~1.5 seconds | 🏆 **Bun (30x faster)** |
-| **Disk Space** | ~500MB | ~200MB | 🏆 **Bun (60% smaller)** |
-| **Script Execution** | ~150ms startup | ~25ms startup | 🏆 **Bun (6x faster)** |
+| Metric | npm | Bun | Improvement |
+|--------|-----|-----|-------------|
+| Package Installation | ~45 seconds | ~1.5 seconds | **30x faster** |
+| Disk Space | ~500MB | ~200MB | **60% smaller** |
+| Script Execution | ~150ms startup | ~25ms startup | **6x faster** |
 
 ### Command Comparison
 
-Bun is a drop-in replacement for npm. Same commands, just faster:
-
-| Action | npm | Bun |
-|--------|-----|-----|
-| Install dependencies | `npm install` | `bun install` |
-| Add a package | `npm install package` | `bun add package` |
-| Remove a package | `npm uninstall package` | `bun remove package` |
-| Run a script | `npm run dev` | `bun run dev` |
-| Run tests | `npm test` | `bun test` |
-| Execute a file | `node script.js` | `bun script.ts` ✨ |
-
-✨ *Bun can run TypeScript files directly without any compilation step!*
+```bash
+# Same commands, just replace 'npm' with 'bun'
+npm install       → bun install
+npm run dev       → bun run dev
+npm run build     → bun run build
+npx tsx file.ts   → bun file.ts    # TypeScript runs directly!
+```
 
 ---
 
-## ✨ Features
+## Quick Start
 
-### 🚀 Core Stack
-
-- **[Next.js 16](https://nextjs.org/)** - The latest version with App Router, Server Components, and React 19
-- **[Bun](https://bun.sh/)** - Blazingly fast JavaScript runtime and package manager
-- **[TypeScript](https://www.typescriptlang.org/)** - Full type safety with strict mode enabled
-- **[React 19](https://react.dev/)** - Latest React with concurrent features and improved performance
-
-### 🎨 UI & Styling
-
-- **[Shadcn/ui](https://ui.shadcn.com/)** - Beautiful, accessible components built on Radix UI primitives
-- **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS with the latest features and OKLch colors
-- **[Dark Mode](https://github.com/pacocoursey/next-themes)** - System-aware theme switching with next-themes
-- **[Lucide Icons](https://lucide.dev/)** - Beautiful, consistent icon set with 1000+ icons
-- **[Geist Font](https://vercel.com/font)** - Vercel's beautiful font family pre-configured
-
-### 🔐 Authentication
-
-- **[NextAuth.js](https://next-auth.js.org/)** - Complete authentication solution with session management
-- **Google OAuth** - Pre-configured Google sign-in (just add your credentials)
-- **Protected Routes** - Example profile page with authentication guard
-- **Session Management** - Server and client-side session handling
-
-### 🛠️ Developer Experience
-
-- **[React Hook Form](https://react-hook-form.com/)** - Performant form handling
-- **[Zod](https://zod.dev/)** - TypeScript-first schema validation
-- **Hot Reloading** - Instant feedback during development with Turbopack
-- **ESLint & Prettier Ready** - Code quality and formatting tools configured
-- **Git Hooks Ready** - Pre-commit hooks for code quality
-
-### 📦 Pre-configured Shadcn Components
-
-The following Shadcn/ui components are already installed and ready to use:
-
-- Avatar
-- Button
-- Card
-- Dropdown Menu
-- Form
-- Input
-- Label
-- Mode Toggle (Custom)
-- Separator
-
-[Browse all available components](https://ui.shadcn.com/docs/components)
-
----
-
-## 🚀 Quick Start
-
-### ⚡ One-Line Installation (Recommended)
-
-The fastest way to get started - everything is automatically set up for you:
+### One-Line Installation (Recommended)
 
 ```bash
 bun create yuv-app my-project
 ```
 
-**Works with all package managers:**
-
+Works with any package manager:
 ```bash
-# With Bun (Recommended - 30x faster)
-bun create yuv-app my-project
-
-# With npm
-npm create yuv-app my-project
-
-# With pnpm
-pnpm create yuv-app my-project
-
-# With Yarn
-yarn create yuv-app my-project
+bun create yuv-app my-project   # Recommended
+npm create yuv-app my-project   # Also works
+pnpm create yuv-app my-project  # Also works
+yarn create yuv-app my-project  # Also works
 ```
 
-> **Note:** This uses the [`create-yuv-app`](https://www.npmjs.com/package/create-yuv-app) package from npm.
+### Manual Installation
 
-Then just:
 ```bash
+# 1. Clone the repository
+git clone https://github.com/hoodini/nextjs-bun-starter.git my-project
 cd my-project
+
+# 2. Install dependencies (~1.5 seconds with Bun!)
+bun install
+
+# 3. Set up environment variables
+cp .env.example .env.local
+
+# 4. Configure Google OAuth (see below)
+
+# 5. Start development
 bun run dev
 ```
 
-🎉 **That's it!** Your app is ready at [http://localhost:3000](http://localhost:3000)
+### Configure Google OAuth
 
----
-
-### 📝 Manual Installation
-
-If you prefer to clone manually:
-
-#### 1. Install Bun
-
-If you don't have Bun installed yet:
-
-**Linux/macOS:**
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-**Windows (PowerShell):**
-```powershell
-powershell -c "irm bun.sh/install.ps1 | iex"
-```
-
-#### 2. Clone the Repository
-
-```bash
-git clone https://github.com/hoodini/nextjs-bun-starter.git my-project
-cd my-project
-```
-
-#### 3. Install Dependencies
-
-```bash
-bun install
-```
-
-This takes about **1-2 seconds** (compared to 30-45 seconds with npm)!
-
----
-
-### 🔐 Configure Authentication (Required)
-
-Whether you used the one-line installer or cloned manually, you need to set up Google OAuth:
-
-#### 1. Configure Environment Variables
-
-Copy the example environment file:
-
-```bash
-cp .env.example .env.local
-```
-
-Then edit `.env.local` with your credentials:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Navigate to **APIs & Services → Credentials**
+4. Click **Create Credentials → OAuth client ID**
+5. Select **Web application**
+6. Add authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+7. Copy credentials to `.env.local`:
 
 ```env
-# Google OAuth
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# NextAuth
-NEXTAUTH_SECRET=generate-a-random-secret-here
+GOOGLE_CLIENT_ID=your-client-id
+GOOGLE_CLIENT_SECRET=your-client-secret
+NEXTAUTH_SECRET=generate-with-openssl-rand-base64-32
 NEXTAUTH_URL=http://localhost:3000
 ```
 
-**Generate a random secret:**
-```bash
-openssl rand -base64 32
-```
-
-#### 2. Set Up Google OAuth
-
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Navigate to **APIs & Services → Credentials**
-4. Click **Create Credentials → OAuth client ID**
-5. Select **Web application** as the application type
-6. Add the following URIs:
-   - **Authorized JavaScript origins:** `http://localhost:3000`
-   - **Authorized redirect URIs:** `http://localhost:3000/api/auth/callback/google`
-7. Copy the **Client ID** and **Client Secret** to your `.env.local` file
-
-#### 3. Start Development Server
-
-```bash
-bun run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser. 🎉
-
 ---
 
-## 📁 Project Structure
+## Customization Guide
 
-```
-nextjs-bun-starter/
-├── app/
-│   ├── api/
-│   │   └── auth/
-│   │       └── [...nextauth]/
-│   │           └── route.ts          # NextAuth API routes
-│   ├── profile/
-│   │   └── page.tsx                  # Protected profile page
-│   ├── globals.css                   # Global styles
-│   ├── layout.tsx                    # Root layout
-│   ├── page.tsx                      # Home page
-│   └── providers.tsx                 # Client providers (Theme, Session)
-├── components/
-│   └── ui/                           # Shadcn/ui components
-│       ├── avatar.tsx
-│       ├── button.tsx
-│       ├── card.tsx
-│       ├── dropdown-menu.tsx
-│       ├── form.tsx
-│       ├── input.tsx
-│       ├── label.tsx
-│       ├── mode-toggle.tsx           # Dark mode toggle
-│       └── separator.tsx
-├── lib/
-│   └── utils.ts                      # Utility functions
-├── public/                           # Static assets
-├── .env.example                      # Environment variables template
-├── .env.local                        # Your environment variables (gitignored)
-├── components.json                   # Shadcn/ui configuration
-├── next.config.ts                    # Next.js configuration
-├── package.json                      # Dependencies
-├── tailwind.config.ts                # Tailwind CSS configuration
-└── tsconfig.json                     # TypeScript configuration
+**This boilerplate is meant to be customized.** Here's what you should change:
+
+### 1. Branding & Colors
+Edit `app/globals.css` to update the color scheme:
+```css
+@theme {
+  --color-primary: oklch(0.7 0.2 340);  /* Your brand color */
+}
 ```
 
----
+### 2. Page Content
+Replace the landing page sections in `app/page.tsx` with your own content. All sections are modular.
 
-## ⚙️ Configuration
+### 3. Authentication
+Add more providers in `app/api/auth/[...nextauth]/route.ts`:
+```typescript
+import GithubProvider from "next-auth/providers/github"
 
-### Adding New Shadcn Components
-
-This project uses [Shadcn/ui](https://ui.shadcn.com/) for components. To add a new component:
-
-```bash
-bunx shadcn@latest add [component-name]
+providers: [
+  GoogleProvider({ ... }),
+  GithubProvider({
+    clientId: process.env.GITHUB_ID!,
+    clientSecret: process.env.GITHUB_SECRET!,
+  }),
+]
 ```
 
-**Examples:**
+### 4. Database (Optional)
+This boilerplate doesn't include a database by default. We recommend:
+- **Prisma + PostgreSQL** for traditional apps
+- **Supabase** for serverless with built-in auth
+- **Drizzle + Turso** for edge deployments
+
+### 5. Add More UI Components
 ```bash
 bunx shadcn@latest add dialog
 bunx shadcn@latest add toast
 bunx shadcn@latest add table
 ```
 
-[View all available components](https://ui.shadcn.com/docs/components)
+---
 
-### Customizing Theme
+## AI-Assisted Customization Prompt
 
-Edit `app/globals.css` to customize your color scheme:
+Copy this prompt into Claude, ChatGPT, or your favorite AI to get personalized help:
 
-```css
-@theme {
-  --color-primary: oklch(0.7 0.2 250);  /* Change primary color */
-  --color-secondary: oklch(0.6 0.15 200);
-  /* ... more colors */
-}
 ```
+I'm building a [describe your app: SaaS, landing page, dashboard, etc.].
 
-### Adding More OAuth Providers
+I'm using the Next.js + Bun boilerplate. Help me customize it:
 
-Edit `app/api/auth/[...nextauth]/route.ts`:
+1. App Name: [Your App Name]
+2. Primary Purpose: [What does your app do?]
+3. Target Users: [Who is this for?]
+4. Key Features Needed:
+   - [Feature 1]
+   - [Feature 2]
+   - [Feature 3]
+5. Color Scheme: [Primary color hex or describe the vibe]
+6. Authentication: [Google only / Add GitHub / Email-password]
+7. Database: [None / Prisma + PostgreSQL / Supabase]
 
-```typescript
-import GithubProvider from "next-auth/providers/github"
-
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    // Add more providers
-    GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
-  ],
-  // ... rest of config
-}
+Please help me:
+- Update the landing page content
+- Modify the color scheme in globals.css
+- Add any additional components I need
+- Set up the database schema if needed
 ```
 
 ---
 
-## 📜 Available Scripts
+## Project Structure
+
+```
+my-project/
+├── app/
+│   ├── api/auth/[...nextauth]/   # Auth API routes
+│   ├── profile/                   # Protected profile page
+│   ├── globals.css                # Global styles & theme
+│   ├── layout.tsx                 # Root layout
+│   ├── page.tsx                   # Homepage (replace this!)
+│   └── providers.tsx              # Theme & Session providers
+├── components/
+│   ├── layout/                    # Navbar, Footer
+│   ├── sections/                  # Page sections
+│   └── ui/                        # Shadcn components
+├── lib/
+│   └── utils.ts                   # Utility functions
+├── .env.example                   # Environment template
+└── package.json                   # Dependencies
+```
+
+---
+
+## Available Scripts
 
 ```bash
-# Development
-bun run dev          # Start development server with hot reloading
-
-# Building
-bun run build        # Create production build
-bun run start        # Start production server
-
-# Linting
-bun run lint         # Run ESLint
-
-# Testing (when configured)
-bun test            # Run tests with Bun's built-in test runner
+bun run dev      # Start development server
+bun run build    # Create production build
+bun run start    # Start production server
+bun run lint     # Run ESLint
+bun test         # Run tests (Bun's built-in test runner)
 ```
 
 ---
 
-## 🎨 Adding New Components
+## Deployment
 
-### Example: Creating a Custom Component
-
-1. **Create the component file:**
-
-```tsx
-// components/my-component.tsx
-import { Button } from "@/components/ui/button"
-
-export function MyComponent() {
-  return (
-    <div className="p-6 rounded-lg border">
-      <h2 className="text-2xl font-bold mb-4">My Component</h2>
-      <Button>Click me</Button>
-    </div>
-  )
-}
-```
-
-2. **Use it in your page:**
-
-```tsx
-// app/page.tsx
-import { MyComponent } from "@/components/my-component"
-
-export default function Page() {
-  return <MyComponent />
-}
-```
-
----
-
-## 🚢 Deployment
-
-### Deploy to Vercel (Recommended)
+### Vercel (Recommended)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/hoodini/nextjs-bun-starter)
 
-1. Push your code to GitHub
-2. Import your repository in [Vercel](https://vercel.com)
-3. Add your environment variables in the Vercel dashboard:
+1. Push to GitHub
+2. Import in Vercel
+3. Add environment variables:
    - `GOOGLE_CLIENT_ID`
    - `GOOGLE_CLIENT_SECRET`
    - `NEXTAUTH_SECRET`
    - `NEXTAUTH_URL` (your production URL)
-4. Deploy!
+4. Update Google OAuth redirect URI for production
 
-**Important:** Update your Google OAuth redirect URIs to include your production URL:
-- `https://your-domain.com/api/auth/callback/google`
+### Other Platforms
 
-### Deploy to Other Platforms
-
-This is a standard Next.js application and can be deployed to:
-- [Vercel](https://vercel.com)
-- [Netlify](https://netlify.com)
-- [Railway](https://railway.app)
-- [Render](https://render.com)
-- Any platform that supports Node.js or Docker
+Works on any platform that supports Node.js:
+- Netlify
+- Railway
+- Render
+- Docker
 
 ---
 
-## 🤝 Contributing
+## Features Included
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### Core
+- [x] Next.js 16 with App Router
+- [x] React 19
+- [x] TypeScript (strict mode)
+- [x] Bun runtime
+
+### UI
+- [x] Shadcn/ui components
+- [x] Tailwind CSS 4
+- [x] Lucide Icons
+- [x] Dark/Light mode
+- [x] Responsive design
+- [x] Geist font
+
+### Auth
+- [x] NextAuth.js
+- [x] Google OAuth
+- [x] Protected routes
+- [x] Session management
+
+### DX
+- [x] React Hook Form + Zod
+- [x] ESLint configured
+- [x] Fast refresh with Turbopack
+
+---
+
+## Contributing
+
+Contributions welcome! Please read the [Contributing Guide](CONTRIBUTING.md).
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 👨‍💻 About the Creator
+## About the Creator
 
 <div align="center">
 
-<img src="https://cdn.hailuoai.video/moss/prod/2026-01-01-02/user/multi_chat_file/1767204442417679023-304191379171532808_1767204439.jpg" alt="Yuval Avidani" width="120" height="120" style="border-radius: 50%">
+<img src="https://cdn.hailuoai.video/moss/prod/2026-01-01-02/user/multi_chat_file/1767204442417679023-304191379171532808_1767204439.jpg" alt="Yuval Avidani" width="100" style="border-radius: 50%">
 
-### Yuval Avidani
+**Yuval Avidani**
 
-**AWS AI Superstar • GitHub Star • Founder of YUV.AI Community**
+AWS AI Superstar | GitHub Star | Founder of YUV.AI
 
-AI Builder & Speaker passionate about making AI practical, personal, and powerful. With 2 decades of experience in tech across development, research, and cybersecurity.
-
-[![Website](https://img.shields.io/badge/Website-yuv.ai-blue?style=for-the-badge)](https://yuv.ai)
-[![GitHub](https://img.shields.io/badge/GitHub-hoodini-black?style=for-the-badge&logo=github)](https://github.com/hoodini)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Yuval_Avidani-0077b5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/%F0%9F%8E%97%EF%B8%8Fyuval-avidani-87081474/)
-[![Twitter](https://img.shields.io/badge/Twitter-@yuvalav-1da1f2?style=for-the-badge&logo=twitter)](https://x.com/yuvalav)
+[![Website](https://img.shields.io/badge/Website-yuv.ai-blue?style=flat-square)](https://yuv.ai)
+[![GitHub](https://img.shields.io/badge/GitHub-hoodini-black?style=flat-square&logo=github)](https://github.com/hoodini)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-yuval--avidani-0077b5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/%F0%9F%8E%97%EF%B8%8Fyuval-avidani-87081474/)
 
 </div>
 
 ---
 
-## 💖 Support
-
-If this boilerplate helped you ship faster, consider:
-
-- ⭐ Starring this repository
-- 🐛 Reporting bugs or suggesting features
-- 📢 Sharing it with other developers
-- ☕ [Buy me a coffee](https://buymeacoffee.com/yuvalav)
-
----
-
 <div align="center">
 
-**Built with ❤️ by [Yuval Avidani](https://yuv.ai)**
+**Built with care by [Yuval Avidani](https://yuv.ai)**
 
-🤖 *Generated with [Claude Code](https://claude.com/claude-code)*
+If this helped you ship faster, consider [starring the repo](https://github.com/hoodini/nextjs-bun-starter)
 
 </div>
