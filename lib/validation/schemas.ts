@@ -142,6 +142,19 @@ export const macroPlanGenerationSchema = z.object({
   raceDistanceKm: z.number().positive().max(500).optional(),
   raceElevationGainM: z.number().int().min(0).max(30000).optional(),
   terrainAccess: safeText.max(600).optional(),
+  // Intake for the head coach — the same fields a training block takes, so a
+  // season knows the target time and the limits it must respect. Stored on the
+  // season and inherited by every phase plan built from it.
+  targetTime: safeString.max(20).optional(),
+  recentRaceResult: safeString.max(300).optional(),
+  currentWeeklyKm: z.number().positive().max(500).optional(),
+  /** What the season should focus on / fix (e.g. "climbing, descending legs"). */
+  addressesWhat: safeText.max(1000).optional(),
+  limitations: safeText.max(1000).optional(),
+  notes: safeText.max(2000).optional(),
+  /** Revising the active season: its id and what the athlete wants changed. */
+  adjustsSeasonId: z.string().uuid().optional(),
+  changeRequest: safeText.max(2000).optional(),
 });
 
 export const planSaveSchema = z.object({

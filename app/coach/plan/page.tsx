@@ -99,7 +99,7 @@ export default function TrainingPlanPage() {
   const [viewingWeek, setViewingWeek] = useState(1);
   const [calculatedCurrentWeek, setCalculatedCurrentWeek] = useState(1);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<string>('generate');
+  const [activeTab, setActiveTab] = useState<string>('season');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   // Staged build progress (see lib/coach/plan-builder)
   const [build, setBuild] = useState<PlanBuildView | null>(null);
@@ -107,6 +107,12 @@ export default function TrainingPlanPage() {
   useEffect(() => {
     fetchPlan();
     resumeBuild();
+    // The season is loaded here too (not only by the Season tab's panel) so
+    // the New plan form can offer "which phase is this plan for".
+    fetch('/api/coach/macro-plan')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d?.macroPlan) setSeason(d.macroPlan); })
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -302,29 +308,25 @@ export default function TrainingPlanPage() {
         className="inline-flex gap-[1px] rounded-full p-[3px]"
         style={{ background: 'var(--rc-surface)', border: '1px solid var(--rc-line)', boxShadow: 'var(--rc-shadow-1)' }}
       >
-        <button
-          onClick={() => setActiveTab('current')}
-          disabled={!activePlan}
-          className="rc-mono px-[13px] py-[7px] rounded-full text-[11px] font-medium transition-colors disabled:opacity-40"
-          style={{
-            background: activeTab === 'current' ? 'var(--rc-ink)' : 'transparent',
-            color: activeTab === 'current' ? '#fff' : 'var(--rc-ink-3)',
-            letterSpacing: '0.06em',
-          }}
-        >
-          CURRENT PLAN
-        </button>
-        <button
-          onClick={() => setActiveTab('generate')}
-          className="rc-mono px-[13px] py-[7px] rounded-full text-[11px] font-medium transition-colors"
-          style={{
-            background: activeTab === 'generate' ? 'var(--rc-ink)' : 'transparent',
-            color: activeTab === 'generate' ? '#fff' : 'var(--rc-ink-3)',
-            letterSpacing: '0.06em',
-          }}
-        >
-          GENERATE NEW
-        </button>
+        {([
+          ['season', 'SEASON', false],
+          ['current', 'CURRENT PLAN', !activePlan],
+          ['generate', 'NEW PLAN', false],
+        ] as const).map(([key, label, disabled]) => (
+          <button
+            key={key}
+            onClick={() => setActiveTab(key)}
+            disabled={disabled}
+            className="rc-mono px-[13px] py-[7px] rounded-full text-[11px] font-medium transition-colors disabled:opacity-40"
+            style={{
+              background: activeTab === key ? 'var(--rc-ink)' : 'transparent',
+              color: activeTab === key ? '#fff' : 'var(--rc-ink-3)',
+              letterSpacing: '0.06em',
+            }}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       {/* Current Plan Tab */}
@@ -560,10 +562,15 @@ export default function TrainingPlanPage() {
         </div>
       )}
 
-      {/* Generate Tab */}
+      {/* Season Tab — the season at a glance, its current phase, and where
+          it is adjusted. Kept apart from building a single plan. */}
+      {activeTab === 'season' && (
+        <SeasonPlanPanel onLoaded={handleSeasonLoaded} onPlanBuilt={fetchPlan} />
+      )}
+
+      {/* New plan Tab */}
       {activeTab === 'generate' && (
         <>
-        <SeasonPlanPanel onLoaded={handleSeasonLoaded} onPlanBuilt={fetchPlan} />
         <div className="rc-card p-0 overflow-hidden">
           <div className="flex items-center justify-between px-6 pt-5 pb-3.5" style={{ borderBottom: '1px solid var(--rc-line)' }}>
             <div>
@@ -724,7 +731,7 @@ export default function TrainingPlanPage() {
                   ))}
                 </select>
                 <p className="text-[11px]" style={{ color: 'var(--rc-ink-4)' }}>
-                  A phase plan is built from the season head coach&apos;s brief for that phase and stays inside its ranges. You can also build it from the Season panel above when it is due.
+                  A phase plan is built from the season head coach&apos;s brief for that phase and stays inside its ranges. You can also build it from the Season tab when it is due.
                 </p>
               </div>
             )}

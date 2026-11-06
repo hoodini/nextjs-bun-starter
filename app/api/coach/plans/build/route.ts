@@ -28,6 +28,8 @@ import { getAthleteProfile } from '@/lib/db/profile';
 import { parseTrainingDays } from '@/lib/coach/training-state';
 import { advance, createBuild, getBuild, latestOpenBuild } from '@/lib/coach/plan-builder/runner';
 import { toView } from '@/lib/coach/plan-builder/view';
+import { describeSeasonForRevision } from '@/lib/coach/plan-builder/season-intake';
+import { userDateStr } from '@/lib/utils/user-time';
 import type { PlanBuildRow } from '@/lib/coach/plan-builder/types';
 
 class ValidationError extends Error {}
@@ -56,7 +58,15 @@ async function phaseBuildRequest(userId: string, fields: Record<string, unknown>
     runsPerWeek: Number(fields.runsPerWeek ?? days?.length ?? 4),
     ...(days?.length ? { trainingDays: days } : {}),
     ...(fields.trainingDayNotes ? { trainingDayNotes: fields.trainingDayNotes } : {}),
-    ...(fields.notes ? { notes: fields.notes } : {}),
+    // The season's intake reaches every phase plan: same target, same limits.
+    // A note typed for this phase goes first; the season's note follows.
+    ...((fields.notes || macro.intake?.notes)
+      ? { notes: [fields.notes, macro.intake?.notes].filter(Boolean).join('\n') }
+      : {}),
+    ...(macro.intake?.targetTime ? { targetTime: macro.intake.targetTime } : {}),
+    ...(macro.intake?.recentRaceResult ? { recentRaceResult: macro.intake.recentRaceResult } : {}),
+    ...(macro.intake?.limitations ? { limitations: macro.intake.limitations } : {}),
+    ...(macro.intake?.addressesWhat ? { addressesWhat: `Season focus: ${macro.intake.addressesWhat}` } : {}),
     macroPlanId: macro.id,
     phaseNumber,
     ...(extensionWeeks ? { extensionWeeks } : {}),
@@ -121,7 +131,16 @@ export async function POST(request: NextRequest) {
       ? await (async () => {
           const v = validateInput(macroPlanGenerationSchema, fields);
           if (!v.success) throw new ValidationError(v.error);
-          return createBuild(auth.userId!, v.data, { kind: 'season' });
+          // A revision: the head coach sees the season being revised and what
+          // the athlete wants changed. Rendered here, server-side, from the
+          // ACTIVE season only — never text supplied by the client.
+          let previousSeasonText: string | undefined;
+          if (v.data.adjustsSeasonId) {
+            const current = await getActiveMacroPlan(auth.userId!);
+            if (!current || current.id !== v.data.adjustsSeasonId) throw new ValidationError('That season is not your active season.');
+            previousSeasonText = describeSeasonForRevision(current, userDateStr());
+          }
+          return createBuild(auth.userId!, { ...v.data, ...(previousSeasonText ? { previousSeasonText } : {}) }, { kind: 'season' });
         })()
       : await (async () => {
           const v = validateInput(planGenerationSchema, fields);

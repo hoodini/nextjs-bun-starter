@@ -19,6 +19,7 @@ import { extractJson } from '@/lib/coach/plan-output';
 import { supabase } from '@/lib/db/supabase';
 import { ask, Meter } from './llm';
 import { formatResearch, prepare } from './prepare';
+import { formatSeasonIntake, intakeFromRequest, type SeasonIntakeInput } from './season-intake';
 import { checkSeason, normalizeSeason, renderSeason, type SeasonCheckContext } from './season-checks';
 import type {
   BuildReport, BuildRequest, BuildStage, CheckReport, CoherenceIssue, CoherenceReview, OutlinePhase,
@@ -42,6 +43,10 @@ export function seasonAsBlockRequest(req: SeasonRequest): BuildRequest {
     planType, durationWeeks: req.horizonWeeks, runsPerWeek: req.runsPerWeek ?? 4,
     targetRace: req.goalName, raceDate: req.raceDate, raceDistanceKm: req.raceDistanceKm,
     raceElevationGainM: req.raceElevationGainM, terrainAccess: req.terrainAccess,
+    // The intake reaches the race brief (target time) and the research intake.
+    targetTime: req.targetTime, recentRaceResult: req.recentRaceResult,
+    currentWeeklyKm: req.currentWeeklyKm, addressesWhat: req.addressesWhat,
+    limitations: req.limitations, notes: req.notes,
   } as BuildRequest;
 }
 
@@ -73,6 +78,8 @@ function seasonContext(req: SeasonRequest, prep: PreparedStage): string {
 ${prep.athlete.text}
 
 ${prep.race.text}
+
+${formatSeasonIntake(req as SeasonIntakeInput)}
 
 ${formatResearch(prep.research)}
 
@@ -179,6 +186,8 @@ export function reviewPrompt(req: SeasonRequest, prep: PreparedStage, season: Se
 
 ${prep.race.text}
 
+${formatSeasonIntake(req as SeasonIntakeInput)}
+
 ## THE SEASON (designed by the head coach)
 Goal: ${season.goal_name} · ${req.horizonWeeks}-week horizon${req.raceDate ? ` · race ${req.raceDate}` : ''}
 Rationale: ${season.rationale}
@@ -195,6 +204,7 @@ Read it as one season and answer:
 3. **Exit criteria** — can each phase's criteria actually be reached inside its length and weekly ranges, and measured with the app's data? A criterion needing more than the phase's range allows is a trap.
 4. **Against the athlete and the race** — does phase 1 start from his measured load? Does the peak prepare him for THIS race's gradient and climb? Are his plantar-fasciitis history, poles, fuelling and altitude handled? Does the season end correctly (race week and taper, or a clean hand-over)?
 5. **The briefs** — could a coach who sees ONLY a phase's brief build the right plan from it? Do the KPIs measure the phase's goal (not something easier to count), and does each phase's hand-over match what the next phase assumes?
+6. **What he told you** — does the season honour every stated limitation, give an honest answer on the target time, and (on a revision) make the change he asked for?
 
 Severity: "must_fix" ONLY for problems that would hurt him or leave him unprepared — name the phases and say exactly what to change. Everything else is a "note". At most 6 issues. If it fits, say so.
 
@@ -292,6 +302,7 @@ export async function runSeasonStage(row: PlanBuildRow): Promise<StageResult> {
         horizon_weeks: req.horizonWeeks,
         phases: row.season!.phases,
         rationale: row.season!.rationale,
+        intake: intakeFromRequest(req as SeasonIntakeInput),
       });
       if (!saved) throw new Error('saving the season failed; the previous season is still active');
       await supabase.from('macro_plans').update({ build_report: report }).eq('id', saved.id);

@@ -115,7 +115,9 @@ export async function proposeForUser(userId: string, weekStart: string): Promise
   if (!plan) {
     await supabase.from('plan_proposals').insert({
       ...base,
-      status: 'pending',
+      // NOT 'pending': there is nothing to accept, and a pending row with no
+      // plan used to surface on the next plan built weeks later.
+      status: 'no_plan',
       proposal: null,
       summary:
         'Signals crossed their thresholds, but there is no active training plan to adjust:\n' +

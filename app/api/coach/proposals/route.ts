@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/db/supabase';
 import { getAuthenticatedUser } from '@/lib/auth/get-user';
 import { getActivePlan } from '@/lib/db/plans';
+import { selectLastQuiet, selectPendingProposal } from '@/lib/coach/proposal-select';
 
 interface ProposalRow {
   id: string;
@@ -38,10 +39,12 @@ export async function GET(request: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   const rows = (data ?? []) as ProposalRow[];
+  const plan = await getActivePlan(auth.userId);
   return NextResponse.json({
-    // The one awaiting a decision, surfaced separately so the UI does not have
-    // to re-derive it.
-    pending: rows.find((r) => r.status === 'pending') ?? null,
+    // The one awaiting a decision: only for the plan active NOW and only while
+    // it is the newest weekly result (see selectPendingProposal).
+    pending: selectPendingProposal(rows, plan?.id ?? null),
+    lastQuiet: selectLastQuiet(rows, plan?.id ?? null),
     proposals: rows,
   });
 }

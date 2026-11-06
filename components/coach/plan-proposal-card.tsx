@@ -36,7 +36,7 @@ export function PlanProposalCard({ onApplied }: { onApplied?: () => void }) {
       if (!res.ok) return;
       const data = await res.json();
       setPending(data.pending ?? null);
-      setLastQuiet((data.proposals ?? []).find((p: Proposal) => p.status === 'no_change') ?? null);
+      setLastQuiet(data.lastQuiet ?? null);
     } catch {
       // A proposal is an enhancement; failing to load one must not break the page.
     }

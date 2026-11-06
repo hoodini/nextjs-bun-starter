@@ -98,6 +98,22 @@ export interface PhaseKpi {
   consecutive_weeks?: number;
 }
 
+/**
+ * What the athlete told the season head coach. Stored on the season so every
+ * phase plan built from it inherits the same target and limits, and so the
+ * Season tab can show what the coach was told.
+ */
+export interface SeasonIntake {
+  targetTime?: string;
+  recentRaceResult?: string;
+  currentWeeklyKm?: number;
+  addressesWhat?: string;
+  limitations?: string;
+  notes?: string;
+  /** On a revision: what the athlete asked to change. */
+  changeRequest?: string;
+}
+
 /** What actually happened to a phase, as opposed to what the season planned. */
 export interface PhaseProgress {
   phase_number: number;
@@ -129,6 +145,8 @@ export interface MacroPlan {
   status: 'active' | 'superseded' | 'completed';
   revision: number;
   supersedes: string | null;
+  /** Null on seasons designed before the intake form (2026-11-06). */
+  intake: SeasonIntake | null;
   created_at: string;
   updated_at: string;
 }
@@ -162,8 +180,8 @@ export async function getMacroPlanById(userId: string, id: string): Promise<Macr
  */
 export async function saveMacroPlan(
   userId: string,
-  plan: Omit<MacroPlan, 'id' | 'user_id' | 'status' | 'revision' | 'supersedes' | 'created_at' | 'updated_at' | 'phase_progress' | 'start_date'>
-    & { start_date?: string | null },
+  plan: Omit<MacroPlan, 'id' | 'user_id' | 'status' | 'revision' | 'supersedes' | 'created_at' | 'updated_at' | 'phase_progress' | 'start_date' | 'intake'>
+    & { start_date?: string | null; intake?: SeasonIntake | null },
 ): Promise<MacroPlan | null> {
   const previous = await getActiveMacroPlan(userId);
 
@@ -185,6 +203,7 @@ export async function saveMacroPlan(
       horizon_weeks: plan.horizon_weeks,
       phases: plan.phases,
       rationale: plan.rationale,
+      intake: plan.intake ?? null,
       // Same week-1 rule as a training plan: never a week that is already over.
       start_date: plan.start_date ?? planStartSunday(userDateStr()),
       phase_progress: plan.phases.map((p) => ({

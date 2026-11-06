@@ -39,6 +39,13 @@ export interface SeasonPlan {
   phases: Phase[];
   rationale: string | null;
   revision: number;
+  terrain_access?: string | null;
+  start_date?: string | null;
+  /** What the athlete told the head coach (null on seasons before 2026-11-06). */
+  intake?: {
+    targetTime?: string; recentRaceResult?: string; currentWeeklyKm?: number;
+    addressesWhat?: string; limitations?: string; notes?: string; changeRequest?: string;
+  } | null;
   /** How the staged builder designed and checked it. Absent on older seasons. */
   build_report?: BuildReport | null;
 }
@@ -59,7 +66,9 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
+  // null = form closed; 'new' = a fresh season; 'adjust' = revise the active one.
+  const [formMode, setFormMode] = useState<'new' | 'adjust' | null>(null);
+  const showForm = formMode !== null;
   const [expanded, setExpanded] = useState<number | null>(null);
   const [build, setBuild] = useState<PlanBuildView | null>(null);
   const [status, setStatus] = useState<SeasonStatusView | null>(null);
@@ -77,6 +86,37 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
   const [raceDistanceKm, setRaceDistanceKm] = useState('');
   const [raceElevationGainM, setRaceElevationGainM] = useState('');
   const [terrainAccess, setTerrainAccess] = useState('');
+  // Intake — what the head coach should know beyond the race itself.
+  const [targetTime, setTargetTime] = useState('');
+  const [recentRaceResult, setRecentRaceResult] = useState('');
+  const [currentWeeklyKm, setCurrentWeeklyKm] = useState('');
+  const [addressesWhat, setAddressesWhat] = useState('');
+  const [limitations, setLimitations] = useState('');
+  const [notes, setNotes] = useState('');
+  const [changeRequest, setChangeRequest] = useState('');
+  const [rebuildPlan, setRebuildPlan] = useState(true);
+
+  /** Open the form empty (new season) or filled from the active one (adjust). */
+  function openForm(mode: 'new' | 'adjust') {
+    const from = mode === 'adjust' ? plan : null;
+    const i = from?.intake ?? {};
+    setGoalName(from?.goal_name ?? '');
+    setRaceDate(from?.race_date ?? '');
+    setHorizonWeeks('');
+    setRaceDistanceKm(from?.race_distance_km != null ? String(from.race_distance_km) : '');
+    setRaceElevationGainM(from?.race_elevation_gain_m != null ? String(from.race_elevation_gain_m) : '');
+    setTerrainAccess(from?.terrain_access ?? '');
+    setTargetTime(i.targetTime ?? '');
+    setRecentRaceResult(i.recentRaceResult ?? '');
+    setCurrentWeeklyKm(i.currentWeeklyKm != null ? String(i.currentWeeklyKm) : '');
+    setAddressesWhat(i.addressesWhat ?? '');
+    setLimitations(i.limitations ?? '');
+    setNotes(i.notes ?? '');
+    setChangeRequest('');
+    setRebuildPlan(true);
+    setError(null);
+    setFormMode(mode);
+  }
 
   const load = useCallback(async () => {
     try {
@@ -131,15 +171,17 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
   }
 
   /** A season build finished: show it, then build phase 1 straight away. */
-  async function runBuild(initial: PlanBuildView) {
+  async function runBuild(initial: PlanBuildView, rebuildPhaseOne = true) {
     const done = await drive(initial);
     if (!done.season) throw new Error('The build finished without a season');
     const saved = done.season as unknown as SeasonPlan;
     setPlan(saved);
     onLoaded?.(saved);
-    setShowForm(false);
+    setFormMode(null);
     await loadStatus();
-    await buildPhase(saved.id, 1);
+    // A new season builds phase 1 straight away. An adjustment may keep the
+    // current plan — the athlete chose with the checkbox.
+    if (rebuildPhaseOne) await buildPhase(saved.id, 1);
   }
 
   /** Build one season phase (or extend the current one) as a training plan. */
@@ -200,11 +242,18 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
           ...(raceDistanceKm ? { raceDistanceKm: parseFloat(raceDistanceKm) } : {}),
           ...(raceElevationGainM ? { raceElevationGainM: parseInt(raceElevationGainM, 10) } : {}),
           ...(terrainAccess ? { terrainAccess } : {}),
+          ...(targetTime ? { targetTime } : {}),
+          ...(recentRaceResult ? { recentRaceResult } : {}),
+          ...(currentWeeklyKm ? { currentWeeklyKm: parseFloat(currentWeeklyKm) } : {}),
+          ...(addressesWhat ? { addressesWhat } : {}),
+          ...(limitations ? { limitations } : {}),
+          ...(notes ? { notes } : {}),
+          ...(formMode === 'adjust' && plan ? { adjustsSeasonId: plan.id, ...(changeRequest ? { changeRequest } : {}) } : {}),
         }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.build) throw new Error(data.error ?? 'Could not start designing the season.');
-      await runBuild(data.build as PlanBuildView);
+      await runBuild(data.build as PlanBuildView, formMode === 'adjust' ? rebuildPlan : true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not design the season.');
     } finally {
@@ -230,7 +279,9 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
           {plan && (
             <p className="text-[12px] mt-0.5" style={{ color: 'var(--rc-ink-3)' }}>
               {plan.horizon_weeks} weeks · {plan.phases.length} phases
+              {plan.start_date ? ` · starts ${plan.start_date}` : ''}
               {plan.race_date ? ` · race ${plan.race_date}` : ''}
+              {plan.race_date ? ` (${Math.max(0, Math.ceil((Date.parse(plan.race_date) - Date.now()) / (7 * 24 * 3600 * 1000)))} wk away)` : ''}
               {gradient !== null ? ` · ${gradient.toFixed(1)} m/km` : ''}
               {plan.revision > 1 ? ` · revision ${plan.revision}` : ''}
             </p>
@@ -333,24 +384,41 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
 
         {build && (generating || build.stage === 'failed') && <div className="mb-4"><PlanBuildProgress build={build} /></div>}
 
+        {plan?.intake && !showForm && <IntakeSummary intake={plan.intake} />}
+
         {!showForm && !generating && (
-          <button
-            type="button"
-            onClick={() => setShowForm(true)}
-            className="text-[13px] font-medium"
-            style={{ color: 'var(--rc-blue-deep)' }}
-          >
-            {plan ? 'Design a new season (replaces this one) →' : 'Design a season →'}
-          </button>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {plan && (
+              <button type="button" onClick={() => openForm('adjust')} className="text-[13px] font-medium" style={{ color: 'var(--rc-blue-deep)' }}>
+                Adjust this season →
+              </button>
+            )}
+            <button type="button" onClick={() => openForm('new')} className="text-[13px] font-medium" style={{ color: plan ? 'var(--rc-ink-3)' : 'var(--rc-blue-deep)' }}>
+              {plan ? 'Design a new season (replaces this one) →' : 'Design a season →'}
+            </button>
+          </div>
         )}
 
         {showForm && (
           <div className="space-y-3 pt-1">
             {plan && (
               <p className="text-[12px]" style={{ color: 'var(--rc-ink-3)' }}>
+                {formMode === 'adjust'
+                  ? 'The head coach sees this season, where you are in it, and what you want changed — and keeps what was sound. '
+                  : ''}
                 The current season is kept and marked superseded, not deleted — so you can still see why it changed.
               </p>
             )}
+
+            {formMode === 'adjust' && (
+              <Field label="What should change?">
+                <textarea value={changeRequest} onChange={(e) => setChangeRequest(e.target.value)} rows={3}
+                  placeholder="e.g. I can only run 3 days a week from January; start climbing work earlier; the race moved to 10 July"
+                  className={INPUT} style={INPUT_STYLE} />
+              </Field>
+            )}
+
+            <SectionLabel>The race</SectionLabel>
             <div className="grid md:grid-cols-2 gap-3">
               <Field label="Goal">
                 <input value={goalName} onChange={(e) => setGoalName(e.target.value)} placeholder="21K trail race, 1300m gain" className={INPUT} style={INPUT_STYLE} />
@@ -361,6 +429,9 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
               <Field label="Horizon (weeks)">
                 <input type="number" min="4" max="104" value={horizonWeeks} onChange={(e) => setHorizonWeeks(e.target.value)} placeholder="auto from race date" className={INPUT} style={INPUT_STYLE} />
               </Field>
+              <Field label="Target time">
+                <input value={targetTime} onChange={(e) => setTargetTime(e.target.value)} placeholder="e.g. 3:15:00, or 'finish strong'" className={INPUT} style={INPUT_STYLE} />
+              </Field>
               <Field label="Race distance (km)">
                 <input type="number" step="0.1" value={raceDistanceKm} onChange={(e) => setRaceDistanceKm(e.target.value)} placeholder="21" className={INPUT} style={INPUT_STYLE} />
               </Field>
@@ -368,9 +439,39 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
                 <input type="number" step="10" value={raceElevationGainM} onChange={(e) => setRaceElevationGainM(e.target.value)} placeholder="1300" className={INPUT} style={INPUT_STYLE} />
               </Field>
             </div>
+
+            <SectionLabel>You</SectionLabel>
+            <div className="grid md:grid-cols-2 gap-3">
+              <Field label="Recent race or time trial">
+                <input value={recentRaceResult} onChange={(e) => setRecentRaceResult(e.target.value)} placeholder="e.g. 10K in 52:30, Oct 2026" className={INPUT} style={INPUT_STYLE} />
+              </Field>
+              <Field label="Current weekly km (optional)">
+                <input type="number" step="1" value={currentWeeklyKm} onChange={(e) => setCurrentWeeklyKm(e.target.value)} placeholder="measured from your runs if empty" className={INPUT} style={INPUT_STYLE} />
+              </Field>
+            </div>
             <Field label="Terrain you can train on">
               <input value={terrainAccess} onChange={(e) => setTerrainAccess(e.target.value)} placeholder="flat roads locally; hills 40 min drive; gym stairs + treadmill" className={INPUT} style={INPUT_STYLE} />
             </Field>
+            <Field label="Limitations to respect">
+              <textarea value={limitations} onChange={(e) => setLimitations(e.target.value)} rows={2}
+                placeholder="injuries, days you cannot train, travel, longest session you can fit, equipment you do not have"
+                className={INPUT} style={INPUT_STYLE} />
+            </Field>
+            <Field label="What should the season focus on?">
+              <textarea value={addressesWhat} onChange={(e) => setAddressesWhat(e.target.value)} rows={2}
+                placeholder="e.g. climbing strength, legs that survive the descents, consistency"
+                className={INPUT} style={INPUT_STYLE} />
+            </Field>
+            <Field label="Anything else the coach should know">
+              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} className={INPUT} style={INPUT_STYLE} />
+            </Field>
+
+            {formMode === 'adjust' && (
+              <label className="flex items-start gap-2 text-[12.5px]" style={{ color: 'var(--rc-ink-2)' }}>
+                <input type="checkbox" checked={rebuildPlan} onChange={(e) => setRebuildPlan(e.target.checked)} className="mt-0.5" />
+                <span>Rebuild my current training plan from the new season&apos;s phase 1. Untick to keep the plan you have now; you can build it later from the phase card.</span>
+              </label>
+            )}
 
             {error && <p className="text-[12px]" style={{ color: 'oklch(0.5 0.18 25)' }}>{error}</p>}
 
@@ -383,11 +484,11 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
                 style={{ background: 'var(--rc-blue)', color: 'white' }}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                {generating ? (build?.label ? `${build.label}…` : 'Starting…') : 'Design season'}
+                {generating ? (build?.label ? `${build.label}…` : 'Starting…') : formMode === 'adjust' ? 'Revise season' : 'Design season'}
               </button>
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={() => setFormMode(null)}
                 className="px-4 py-2 rounded-xl text-[13px] font-medium"
                 style={{ background: 'var(--rc-surface-2)', border: '1px solid var(--rc-line)', color: 'var(--rc-ink-2)' }}
               >
@@ -395,7 +496,7 @@ export function SeasonPlanPanel({ onLoaded, onPlanBuilt }: {
               </button>
             </div>
             <p className="text-[11px]" style={{ color: 'var(--rc-ink-4)' }}>
-              The season sets phase targets and exit criteria only — no daily workouts. Blocks are generated against it below.
+              The season sets phase targets, KPIs and exit criteria — no daily workouts. Each phase is built as a training plan when it is due. Takes about 6 minutes.
             </p>
           </div>
         )}
@@ -438,6 +539,37 @@ function BriefList({ title, items }: { title: string; items?: string[] }) {
     <div>
       <p className="rc-mono text-[10.5px] uppercase mb-1" style={{ color: 'var(--rc-ink-4)', letterSpacing: '0.08em' }}>{title}</p>
       <ul className="space-y-0.5">{items.map((m, i) => <li key={i}>· {m}</li>)}</ul>
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="rc-mono text-[10.5px] uppercase pt-1" style={{ color: 'var(--rc-ink-4)', letterSpacing: '0.08em' }}>
+      {children}
+    </p>
+  );
+}
+
+/** What the head coach was told when this season was designed. */
+function IntakeSummary({ intake }: { intake: NonNullable<SeasonPlan['intake']> }) {
+  const rows: [string, string | undefined][] = [
+    ['Target time', intake.targetTime],
+    ['Recent result', intake.recentRaceResult],
+    ['Weekly km you reported', intake.currentWeeklyKm != null ? String(intake.currentWeeklyKm) : undefined],
+    ['Focus', intake.addressesWhat],
+    ['Limitations', intake.limitations],
+    ['Notes', intake.notes],
+    ['Last change you asked for', intake.changeRequest],
+  ];
+  const shown = rows.filter(([, v]) => v);
+  if (!shown.length) return null;
+  return (
+    <div className="rounded-xl p-4 mb-4 text-[12.5px] space-y-1" style={{ background: 'var(--rc-surface-2)', border: '1px solid var(--rc-line)', color: 'var(--rc-ink-2)' }}>
+      <div className="rc-kicker mb-1">What you told the coach</div>
+      {shown.map(([k, v]) => (
+        <p key={k}><strong>{k}:</strong> {v}</p>
+      ))}
     </div>
   );
 }
